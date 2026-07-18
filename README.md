@@ -1,8 +1,8 @@
 # Cartify 🛒
 
-A comprehensive, production-ready Full-Stack E-Commerce application built completely from scratch. Designed to move past surface-level tutorials, Cartify implements secure dynamic checkout flows, persistent cloud media pipelines, and robust relational database engines optimized for modern serverless infrastructure.
+A comprehensive, production-ready Full-Stack E-Commerce application built completely from scratch. Designed to move past surface-level tutorials, Cartify bridges the gap between client-side storefront operations and backend infrastructure by implementing secure dynamic checkout flows, persistent cloud media pipelines, and robust relational database engines optimized for modern serverless environments.
 
-No templates, no shortcuts. Just pure software engineering. 🛠️🚀
+No templates, no shortcuts. Just pure full-stack software engineering. 🛠️🚀
 
 <!-- Tech & Deployment Badges for Visual Appeal -->
 [![Live Demo](https://img.shields.io/badge/Demo-Live_Deployment-0070f3?style=for-the-badge&logo=vercel&logoColor=white)](https://cartify-kohl-seven.vercel.app/)
@@ -16,7 +16,9 @@ No templates, no shortcuts. Just pure software engineering. 🛠️🚀
 ## 🚀 Live Demo & Repository
 
 Experience the application in production or explore the codebase:
-* 🌍 **Live Deployment:** (https://cartify-kohl-seven.vercel.app/)
+* 🌍 **Live Deployment:** [Launch Cartify on Vercel](https://cartify-kohl-seven.vercel.app/)
+* 🎯 **GitHub Repository:** [github.com/paridhiagra/Cartify](https://github.com/paridhiagra/Cartify.git)
+
 ---
 
 ## ✨ Project Highlights
@@ -24,23 +26,24 @@ Experience the application in production or explore the codebase:
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🛒 For Shoppers</h3>
+      <h3>🛒 For Shoppers (Full Storefront)</h3>
       <ul>
-        <li>🔒 <b>Secure Session Auth:</b> Ironclad login states powered by database-backed session tracking.</li>
-        <li>🛍️ <b>Persistent Shopping Cart:</b> Add, modify, and sync items seamlessly across device refreshes.</li>
-        <li>💳 <b>Stripe Checkout:</b> End-to-end production-ready integration simulating real-world payments.</li>
+        <li>🔒 <b>Secure Authentication:</b> End-to-end user signup and login tracking backed by robust session encryption.</li>
+        <li>🔍 <b>Product Catalog & Search:</b> Advanced dynamic search functionality to query and filter through products instantly.</li>
+        <li>🛍️ <b>Persistent Shopping Cart:</b> Full-featured cart management allowing users to add, update quantity, and save items across device refreshes.</li>
+        <li>💳 <b>Stripe Checkout Gateway:</b> Production-ready, secure checkout pipeline managing mock live payments seamlessly.</li>
+        <li>📦 <b>Order Tracking & History:</b> Complete end-to-end visibility for users to monitor their purchased item states.</li>
         <li>📄 <b>Instant PDF Invoices:</b> Automatically generate and download professional billing receipts post-checkout.</li>
-        <li>🎨 <b>Intuitive UI/UX:</b> A slick, distraction-free digital storefront experience.</li>
       </ul>
     </td>
     <td width="50%" valign="top">
-      <h3>🛠️ For Admins</h3>
+      <h3>🛠️ For Admins (Operations Control)</h3>
       <ul>
-        <li>📊 <b>Centralized Dashboard:</b> Full administrative control over product inventories and logistics.</li>
-        <li>➕ <b>Catalog Management:</b> Real-time dynamic capabilities to add, edit, or delete store listings.</li>
-        <li>☁️ <b>Cloud Image Pipeline:</b> Automated asset optimization, scaling, and delivery via Cloudinary CDN.</li>
-        <li>📦 <b>Relational Data Architecture:</b> Structured data modeling mapping products, sessions, and logs.</li>
-        <li>🛡️ <b>Role-Based Access:</b> Secure endpoint protection preventing unauthorized routing access.</li>
+        <li>📊 <b>Centralized Admin Dashboard:</b> A dedicated analytical space for complete control over shop analytics.</li>
+        <li>➕ <b>Inventory & Product Management:</b> Real-time CRUD capabilities enabling admins to add, edit, or delete items on the fly.</li>
+        <li>☁️ <b>Cloud Image Pipeline:</b> Automated media optimization, dynamic compression, and image delivery via Cloudinary CDN.</li>
+        <li>📦 <b>Relational Schemas:</b> Advanced database architecture mapping users, secure sessions, order logs, and foreign constraints.</li>
+        <li>🛡️ <b>Role-Based Access:</b> Critical server-side middleware preventing unauthorized users from accessing admin routes.</li>
       </ul>
     </td>
   </tr>
@@ -52,20 +55,21 @@ Experience the application in production or explore the codebase:
 
 | Layer | Technology | Operational Purpose |
 | :--- | :--- | :--- |
-| **Frontend** | HTML5 + CSS3 + Vanilla JS | Driven by a custom written UI Theme Engine for clean animations. |
-| **Backend** | Node.js + Express.js | Structured entirely around clean RESTful API Design principles. |
-| **Database** | Neon PostgreSQL | Cloud-managed robust relational database cluster. |
-| **Session Cache**| `connect-pg-simple` | Resolves serverless statelessness by preserving cookies via DB. |
-| **Media Pipeline**| Cloudinary API | Real-time cloud scaling, dynamic rendering, and CDN content delivery. |
-| **Payment Gateway**| Stripe API | Handles dynamic secure checkout flows and webhooks. |
-| **Architecture** | [Vercel Serverless](https://cartify-kohl-seven.vercel.app/) | Globally distributed serverless functions routing live application traffic. |
+| **Frontend** | HTML5 + CSS3 + Vanilla JS | Driven by a custom written UI Theme Engine for clean rendering and responsiveness. |
+| **Backend** | Node.js + Express.js | Structured entirely around modular, clean, and highly scalable RESTful API Design principles. |
+| **Database** | Neon PostgreSQL | Cloud-managed robust relational database cluster (upgraded from local SQLite). |
+| **Session Cache**| `connect-pg-simple` | Resolves serverless statelessness by preserving login cookies via database queries. |
+| **Media Pipeline**| Cloudinary API | Real-time cloud scaling, dynamic rendering, and automated product image delivery. |
+| **Payment Gateway**| Stripe API | Handles dynamic secure checkout flows, payment processing, and webhooks. |
+| **Deployment** | Vercel Serverless | Globally distributed serverless environment routing production application traffic. |
+| **Version Control**| Git & GitHub | Maintained clean codebase workflow through structured atomic commits. |
 
 ---
 
 ## 🧠 Architectural Insights & Key Learnings
 
-Building **Cartify** brought forward a lot of engineering problems that tutorials usually skip:
+Building **Cartify** brought forward several architectural engineering problems that standard tutorials usually skip:
 
-1. **Handling Serverless Statelessness:** Traditional server-side sessions vanish when serverless instances spin down on Vercel. I bypassed this bottleneck by decoupling the app's state, integrating a custom relational database-backed session strategy (`connect-pg-simple`) to secure sessions perfectly.
-2. **Relational Constraints over NoSQL:** Rather than relying on unstructured stores, I modeled the transactional lifecycle with precise foreign-key relationships and data schemas using Neon PostgreSQL—ensuring transactional integrity.
-3. **Third-Party Pipeline Syncing:** Handling asynchronous API responses from Stripe (payment capture) integration and Cloudinary (image optimization logs) required an optimized backend data structure to prevent data race conditions.
+1. **Handling Serverless Statelessness:** Traditional server-side sessions vanish when serverless instances spin down on Vercel. I bypassed this bottleneck by decoupling the app's state, integrating a custom relational database-backed session strategy (`connect-pg-simple`) to secure sessions perfectly without losing user logs.
+2. **Database Migration & Scaling:** Upgraded the data architecture from local **SQLite** files to cloud-hosted **Neon PostgreSQL**. Designed advanced relational tables using explicit data types, primary/foreign keys, and data relationships to maintain strong transactional integrity during heavy cart modifications.
+3. **Third-Party Pipeline Syncing:** Handling asynchronous data streams from Stripe (payment capture simulations) and Cloudinary (image optimization logs) required an optimized backend data structure to prevent data race conditions and ensure safe state updates.
