@@ -16,11 +16,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1);
+
 app.use(session({
   secret: 'cartify-secret-key-change-later',
   resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 }
+  saveUninitialized: false, // Production ke liye false rakhna better hota hai
+  cookie: { 
+    maxAge: 1000 * 60 * 60 * 24,
+    secure: true,   
+    sameSite: 'lax'
+  }
 }));
 
 // 1. Cart initialize
