@@ -16,14 +16,26 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
+const pgSession = require('connect-pg-simple')(session);
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
 app.set('trust proxy', 1);
 
 app.use(session({
+  store: new pgSession({
+    pool: pool,                // Connection pool
+    tableName: 'session'      
+  }),
   secret: 'cartify-secret-key-change-later',
   resave: false,
-  saveUninitialized: false, // Production ke liye false rakhna better hota hai
+  saveUninitialized: false,
   cookie: { 
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60 * 24, // 1 din
     secure: true,   
     sameSite: 'lax'
   }
