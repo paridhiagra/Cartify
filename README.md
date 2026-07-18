@@ -59,7 +59,7 @@ Ensure you have the following installed locally:
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/Cartify.git
+git clone https://github.com/paridhiagra/Cartify.git
 cd Cartify
 ```
 
