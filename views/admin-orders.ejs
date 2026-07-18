@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Orders — Cartify Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('cartify-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo">Cartify</a>
+    <nav class="header-nav">
+      <button onclick="toggleTheme()" class="theme-toggle">🌙</button>
+      <a href="/cart">Cart</a>
+      <% if (currentUser) { %>
+        <a href="/my-orders">My Orders</a>
+        <span class="user-greeting">Hi, <%= currentUser.name %></span>
+        <form action="/logout" method="POST" class="logout-form">
+          <button type="submit" class="link-btn">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <div class="orders-page">
+    <h1>All Orders (Admin)</h1>
+
+    <% if (orders.length === 0) { %>
+      <p class="no-results">Abhi tak koi order nahi hai.</p>
+    <% } else { %>
+      <div class="orders-list">
+        <% orders.forEach(function(order) { %>
+          <div class="order-card">
+            <div class="order-card-header">
+              <div>
+                <h3>Order #<%= order.id %></h3>
+                <span class="order-date"><%= new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></span>
+                <p class="customer-info"><%= order.customer_name %> — <%= order.customer_email %></p>
+              </div>
+              <span class="order-status status-<%= order.status %>"><%= order.status %></span>
+            </div>
+
+            <div class="order-card-items">
+              <% order.items.forEach(function(item) { %>
+                <div class="order-item-row">
+                  <span><%= item.name %> × <%= item.quantity %></span>
+                </div>
+              <% }); %>
+            </div>
+
+            <div class="order-card-footer">
+              <span>Total: ₹<%= order.total_amount %></span>
+            </div>
+
+            <form action="/admin/orders/<%= order.id %>/status" method="POST" class="status-update-form">
+              <label for="status-<%= order.id %>">Update Status:</label>
+              <select id="status-<%= order.id %>" name="status">
+                <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+              </select>
+              <button type="submit" class="btn-update">Update</button>
+            </form>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+</body>
+</html>

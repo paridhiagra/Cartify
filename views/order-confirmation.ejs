@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmed — Cartify</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('cartify-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="/" class="logo">Cartify</a>
+        <nav class="header-nav">
+          <button onclick="toggleTheme()" class="theme-toggle">🌙</button>
+          <a href="/cart">Cart</a>
+          <% if (currentUser) { %>
+            <a href="/my-orders">My Orders</a>
+            <span class="user-greeting">Hi, <%= currentUser.name %></span>
+            <form action="/logout" method="POST" class="logout-form">
+              <button type="submit" class="link-btn">Logout</button>
+            </form>
+          <% } else { %>
+            <a href="/login">Login</a>
+          <% } %>
+        </nav>
+      </header>
+
+  <div class="confirmation-page">
+    <div class="confirmation-badge">✓</div>
+    <h1>Order Placed!</h1>
+    <p class="confirmation-sub">Order #<%= order.id %> — Thank you for shopping with Cartify.</p>
+
+    <div class="confirmation-items">
+      <% items.forEach(function(item) { %>
+        <div class="summary-item">
+          <span><%= item.name %> × <%= item.quantity %></span>
+          <span>₹<%= item.price_at_purchase * item.quantity %></span>
+        </div>
+      <% }); %>
+      <div class="summary-total">
+        <span>Total</span>
+        <span>₹<%= order.total_amount %></span>
+      </div>
+    </div>
+
+    <a href="/order-confirmation/<%= order.id %>/invoice" class="btn-primary confirmation-btn" style="margin-right: 0.5rem;">Download Invoice</a>
+    <a href="/" class="btn-primary confirmation-btn">Continue Shopping</a>
+  </div>
+
+</body>
+</html>

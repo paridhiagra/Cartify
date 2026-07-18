@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= product.name %> — Cartify</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('cartify-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="/" class="logo">Cartify</a>
+        <nav class="header-nav">
+          <button onclick="toggleTheme()" class="theme-toggle">🌙</button>
+          <a href="/cart">Cart</a>
+          <% if (currentUser) { %>
+            <a href="/my-orders">My Orders</a>
+            <span class="user-greeting">Hi, <%= currentUser.name %></span>
+            <form action="/logout" method="POST" class="logout-form">
+              <button type="submit" class="link-btn">Logout</button>
+            </form>
+          <% } else { %>
+            <a href="/login">Login</a>
+          <% } %>
+        </nav>
+      </header>
+
+  <div class="product-detail">
+    <img src="<%= product.image_url %>" alt="<%= product.name %>" class="detail-image">
+
+    <div class="detail-info">
+      <span class="category"><%= product.category %></span>
+      <h1><%= product.name %></h1>
+      <p class="detail-desc"><%= product.description %></p>
+      <span class="price-tag">₹<%= product.price %></span>
+
+      <p class="stock-info">
+        <% if (product.stock > 0) { %>
+          In stock (<%= product.stock %> available)
+        <% } else { %>
+          Out of stock
+        <% } %>
+      </p>
+
+      <form action="/cart/add" method="POST" class="add-to-cart-form">
+        <input type="hidden" name="product_id" value="<%= product.id %>">
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" name="quantity" value="1" min="1" max="<%= product.stock %>">
+        <button type="submit" class="btn-primary" <%= product.stock === 0 ? 'disabled' : '' %>>
+          Add to Cart
+        </button>
+      </form>
+
+      <% if (currentUser && currentUser.role === 'admin') { %>
+        <a href="/admin/edit-product/<%= product.id %>" class="edit-link">Edit this product</a>
+      <% } %>
+
+
+      <div class="reviews-section">
+        <h2>Reviews <% if (avgRating) { %>— ⭐ <%= avgRating %> (<%= reviews.length %> review<%= reviews.length > 1 ? 's' : '' %>)<% } %></h2>
+      
+        <% if (canReview) { %>
+          <form action="/products/<%= product.id %>/review" method="POST" class="review-form">
+            <label for="rating">Your Rating</label>
+            <select id="rating" name="rating" required>
+              <option value="">Select rating</option>
+              <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+              <option value="4">⭐⭐⭐⭐ (4)</option>
+              <option value="3">⭐⭐⭐ (3)</option>
+              <option value="2">⭐⭐ (2)</option>
+              <option value="1">⭐ (1)</option>
+            </select>
+      
+            <label for="comment">Your Review (optional)</label>
+            <textarea id="comment" name="comment" rows="3" placeholder="Kaisa laga ye product?"></textarea>
+      
+            <button type="submit" class="btn-primary">Submit Review</button>
+          </form>
+        <% } %>
+      
+        <% if (reviews.length === 0) { %>
+          <p class="no-results">Abhi tak koi review nahi hai.</p>
+        <% } else { %>
+          <div class="reviews-list">
+            <% reviews.forEach(function(review) { %>
+              <div class="review-card">
+                <div class="review-header">
+                  <span class="review-stars"><%= '⭐'.repeat(review.rating) %></span>
+                  <span class="review-author"><%= review.reviewer_name %></span>
+                  <span class="review-date"><%= new Date(review.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></span>
+                </div>
+                <% if (review.comment) { %>
+                  <p class="review-comment"><%= review.comment %></p>
+                <% } %>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+      </div>
+      <a href="/" class="back-link">← Back to all products</a>
+    </div>
+  </div>
+
+</body>
+</html>

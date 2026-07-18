@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cartify — Curated Finds</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('cartify-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo">Cartify</a>
+    <nav class="header-nav">
+      <button onclick="toggleTheme()" class="theme-toggle">🌙</button>
+      <a href="/cart">Cart</a>
+      <% if (currentUser) { %>
+        <a href="/my-orders">My Orders</a>
+        <% if (currentUser.role === 'admin') { %>
+          <a href="/admin/orders">All Orders</a>
+          <a href="/admin/add-product">Add Product</a>
+        <% } %>
+        <span class="user-greeting">Hi, <%= currentUser.name %></span>
+        <form action="/logout" method="POST" class="logout-form">
+          <button type="submit" class="link-btn">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <form action="/" method="GET" class="search-form">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Search products..." 
+        value="<%= searchQuery || '' %>"
+      >
+      <% if (selectedCategory) { %>
+        <input type="hidden" name="category" value="<%= selectedCategory %>">
+      <% } %>
+      <button type="submit">Search</button>
+    </form>
+
+    <nav class="category-nav">
+      <a href="/" class="<%= !selectedCategory ? 'active' : '' %>">All</a>
+      <% categories.forEach(function(cat) { %>
+        <a href="/?category=<%= cat.category %>" class="<%= selectedCategory === cat.category ? 'active' : '' %>">
+          <%= cat.category %>
+        </a>
+      <% }); %>
+    </nav>
+
+    <h1>Small things, chosen carefully.</h1>
+    <p>A curated edit of home decor, stationery, and everyday objects worth keeping.</p>
+  </section>
+
+  <% if (products.length === 0) { %>
+    <p class="no-results">No products found. <a href="/">View all products</a></p>
+  <% } else { %>
+    <div class="product-grid">
+      <% products.forEach(function(product) { %>
+        <a href="/products/<%= product.id %>" class="product-card">
+          <div class="image-wrapper <%= product.stock === 0 ? 'is-oos' : '' %>">
+            <img src="<%= product.image_url %>" alt="<%= product.name %>">
+            <% if (product.stock === 0) { %>
+              <span class="oos-badge">Out of Stock</span>
+            <% } %>
+          </div>
+          <span class="category"><%= product.category %></span>
+          <h3><%= product.name %></h3>
+          <p class="desc"><%= product.description %></p>
+          <span class="price-tag">₹<%= product.price %></span>
+        </a>
+      <% }); %>
+    </div>
+  <% } %>
+
+</body>
+</html>

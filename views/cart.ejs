@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart — Cartify</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('cartify-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo">Cartify</a>
+    <nav class="header-nav">
+      <button onclick="toggleTheme()" class="theme-toggle">🌙</button>
+      <a href="/cart">Cart</a>
+      <% if (currentUser) { %>
+        <a href="/my-orders">My Orders</a>
+        <span class="user-greeting">Hi, <%= currentUser.name %></span>
+        <form action="/logout" method="POST" class="logout-form">
+          <button type="submit" class="link-btn">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <div class="cart-page">
+    <h1>Your Cart</h1>
+
+    <% if (cartItems.length === 0) { %>
+      <p class="empty-cart">Your cart is empty. <a href="/">Continue shopping</a></p>
+    <% } else { %>
+      <div class="cart-list">
+        <% cartItems.forEach(function(item) { %>
+          <div class="cart-item">
+            <img src="<%= item.image_url %>" alt="<%= item.name %>">
+            <div class="cart-item-info">
+              <h3><%= item.name %></h3>
+              <p>₹<%= item.price %></p>
+            </div>
+
+            <form action="/cart/update/<%= item.id %>" method="POST" class="qty-update-form">
+              <input type="number" name="quantity" value="<%= item.quantity %>" min="1" max="<%= item.stock %>">
+              <button type="submit" class="btn-update">Update</button>
+            </form>
+
+            <span class="cart-item-subtotal">₹<%= item.subtotal %></span>
+
+            <form action="/cart/remove/<%= item.id %>" method="POST">
+              <button type="submit" class="btn-remove">Remove</button>
+            </form>
+          </div>
+        <% }); %>
+      </div>
+
+      <div class="cart-total">
+        <span>Total</span>
+        <span>₹<%= total %></span>
+      </div>
+
+      <a href="/checkout" class="btn-primary checkout-btn">Proceed to Checkout</a>
+    <% } %>
+
+    <a href="/" class="back-link">← Continue shopping</a>
+  </div>
+
+</body>
+</html>

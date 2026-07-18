@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Product — Cartify</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('cartify-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="/js/theme.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo">Cartify</a>
+    <nav class="header-nav">
+      <button onclick="toggleTheme()" class="theme-toggle">🌙</button>
+      <a href="/cart">Cart</a>
+      <% if (currentUser) { %>
+        <a href="/my-orders">My Orders</a>
+        <span class="user-greeting">Hi, <%= currentUser.name %></span>
+        <form action="/logout" method="POST" class="logout-form">
+          <button type="submit" class="link-btn">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <div class="add-product-page">
+    <h1>Edit Product</h1>
+
+    <% if (error) { %>
+      <p class="auth-error"><%= error %></p>
+    <% } %>
+
+    <div class="current-image-preview">
+      <p>Current Image:</p>
+      <img src="<%= product.image_url %>" alt="<%= product.name %>">
+    </div>
+
+    <form action="/admin/edit-product/<%= product.id %>" method="POST" enctype="multipart/form-data" class="add-product-form">
+      <label for="name">Product Name</label>
+      <input type="text" id="name" name="name" value="<%= product.name %>" required>
+
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="3"><%= product.description %></textarea>
+
+      <label for="price">Price (₹)</label>
+      <input type="number" id="price" name="price" step="0.01" min="0" value="<%= product.price %>" required>
+
+      <label for="category">Category</label>
+      <input type="text" id="category" name="category" value="<%= product.category %>" required>
+
+      <label for="stock">Stock Quantity</label>
+      <input type="number" id="stock" name="stock" min="0" value="<%= product.stock %>" required>
+
+      <label for="image">New Product Image (optional — chhod do agar image nahi badalni)</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <button type="submit" class="btn-primary">Update Product</button>
+      
+    </form>
+  </form>
+
+  <form action="/admin/delete-product/<%= product.id %>" method="POST" class="delete-product-form" onsubmit="return confirm('Kya tum sach me is product ko delete karna chahti ho? Ye action wapas nahi ho sakta.');">
+    <button type="submit" class="btn-delete">Delete Product</button>
+  </form>
+  </div>
+
+</body>
+</html>
