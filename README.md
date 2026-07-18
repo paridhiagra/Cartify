@@ -16,9 +16,7 @@ No templates, no shortcuts. Just pure software engineering. 🛠️🚀
 ## 🚀 Live Demo & Repository
 
 Experience the application in production or explore the codebase:
-* 🌍 **Live Deployment:** [Launch Cartify on Vercel](https://cartify-kohl-seven.vercel.app/)
-* 🎯 **GitHub Repository:** [github.com/paridhiagra/Cartify](https://github.com/paridhiagra/Cartify.git)
-
+* 🌍 **Live Deployment:** (https://cartify-kohl-seven.vercel.app/)
 ---
 
 ## ✨ Project Highlights
